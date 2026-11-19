@@ -1,0 +1,30 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gen": "node src/gen/generate.ts",
+    "validate": "node src/gen/validate.ts",
+    "build": "tsc -p tsconfig.web.json",
+    "serve": "node src/server/serve.ts",
+    "start": "npm run build && npm run serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/717441128-21699/ccfb-14053.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/717441128-21699/ccfb-14053/issues"
+  },
+  "homepage": "https://github.com/717441128-21699/ccfb-14053#readme",
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
+}

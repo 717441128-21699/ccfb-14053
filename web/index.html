@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>回声分析台 · 鱼探仪岸上分析</title>
+<style>
+  :root {
+    --bg: #0d1420; --panel: #141d2e; --line: #24314a; --fg: #d7e0ee;
+    --dim: #7f8ca3; --fish: #ff5a4e; --plankton: #4ecf7a; --bottom: #ffd24a;
+    --accent: #4aa8ff;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.5 "Microsoft YaHei", system-ui, sans-serif; }
+  header { display: flex; align-items: center; gap: 16px; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  header h1 { font-size: 16px; margin: 0; }
+  select, button { background: #0f1726; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 4px 8px; font: inherit; }
+  .toggles label { margin-right: 10px; color: var(--dim); cursor: pointer; }
+  .toggles input { vertical-align: -2px; }
+  #loadstat { color: var(--dim); }
+  #loadstat b { color: var(--plankton); }
+  main { display: grid; grid-template-columns: 1fr 320px; gap: 8px; padding: 8px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+  #echowrap { position: relative; overflow-x: auto; overflow-y: hidden; }
+  #echostack { position: relative; }
+  canvas.echo { display: block; image-rendering: pixelated; }
+  .echolabel { position: sticky; left: 8px; font-size: 12px; color: var(--dim); padding: 2px 0; }
+  #readout { position: sticky; left: 8px; height: 20px; font-size: 12px; color: var(--accent); }
+  #striplabel { font-size: 12px; color: var(--dim); padding: 6px 8px 2px; }
+  aside { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  aside .panel { padding: 8px; }
+  aside h2 { font-size: 13px; margin: 0 0 6px; color: var(--dim); font-weight: normal; }
+  #stats { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+  #stats b { color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { padding: 3px 4px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { color: var(--dim); font-weight: normal; }
+  td.l, th.l { text-align: left; }
+  tr.school { cursor: pointer; }
+  tr.school:hover { background: #1b2740; }
+  tr.school.sel { background: #233657; }
+  .tag { display: inline-block; padding: 0 5px; border-radius: 3px; font-size: 11px; }
+  .tag.fish { background: #4a1f1c; color: var(--fish); }
+  .tag.plankton { background: #14351f; color: var(--plankton); }
+  .tag.near { background: #4a3a14; color: var(--bottom); margin-left: 3px; }
+  #mapwrap { padding: 8px; }
+  #map { width: 100%; display: block; }
+  #schoollist { max-height: 300px; overflow-y: auto; }
+  #hauls { font-size: 13px; color: var(--dim); }
+  #hauls span { display: inline-block; margin-right: 10px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>回声分析台</h1>
+  <select id="voyage"></select>
+  <span class="toggles">
+    <label><input type="checkbox" id="showBottom" checked> 海底线</label>
+    <label><input type="checkbox" id="showLayer" checked> 海底上0.5m层</label>
+    <label><input type="checkbox" id="showSchools" checked> 目标框</label>
+  </span>
+  <span id="loadstat">未加载</span>
+</header>
+<main>
+  <section class="panel" id="echopanel">
+    <div id="echowrap">
+      <div id="echostack"></div>
+    </div>
+    <div id="readout">&nbsp;</div>
+    <div id="striplabel">海底以上 0.5 m 水层(拉平显示,黄线为海底线)</div>
+    <div id="stripwrap" style="overflow-x:auto">
+      <canvas id="strip" class="echo"></canvas>
+    </div>
+  </section>
+  <aside>
+    <div class="panel" id="mapwrap"><h2>航迹与渔场</h2><canvas id="map"></canvas></div>
+    <div class="panel"><h2>航次概况</h2><div id="stats"></div><div id="hauls"></div></div>
+    <div class="panel"><h2>检测目标(点击定位)</h2><div id="schoollist"></div></div>
+  </aside>
+</main>
+<script type="module" src="/public/web/app.js"></script>
+</body>
+</html>
